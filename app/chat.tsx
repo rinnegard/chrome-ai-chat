@@ -72,7 +72,7 @@ export default function Chat() {
                 </span>
             </div>
 
-            <div className="overflow-y-scroll max-h-[40rem] my-4 p-2 border border-gray-200 rounded-lg bg-gray-50 flex flex-col gap-2">
+            <div className="overflow-y-scroll h-[40rem] my-4 p-2 border border-gray-200 rounded-lg bg-gray-50 flex flex-col gap-2">
                 {messages.map((message) => {
                     return (
                         <ChatMessage
