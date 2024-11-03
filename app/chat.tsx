@@ -11,6 +11,7 @@ export type Message = {
 
 export default function Chat() {
     const [status, setStatus] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
     const sessionRef = useRef<any>(null);
@@ -19,8 +20,6 @@ export default function Chat() {
         async function init() {
             const { available } = await window.ai.languageModel.capabilities();
             console.log(available);
-
-            setStatus(available);
 
             if (available !== "no") {
                 setStatus(true);
@@ -32,7 +31,7 @@ export default function Chat() {
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e?.preventDefault();
-        setStatus(false);
+        setLoading(true);
         if (!inputRef.current) {
             return;
         }
@@ -57,7 +56,7 @@ export default function Chat() {
             ];
         });
 
-        setStatus(true);
+        setLoading(false);
     }
 
     return (
@@ -102,7 +101,7 @@ export default function Chat() {
                 <button
                     className="rounded-lg bg-blue-600 text-white w-full py-2 font-semibold mt-2 hover:bg-blue-500 transition duration-200 ease-in-out disabled:bg-gray-300 disabled:cursor-not-allowed"
                     type="submit"
-                    disabled={!status}
+                    disabled={!status || loading}
                 >
                     Submit
                 </button>
