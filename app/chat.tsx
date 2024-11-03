@@ -1,11 +1,13 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function Chat() {
     const [status, setStatus] = useState<string | undefined>();
     const [answer, setAnswer] = useState<string | undefined>();
     const inputRef = useRef<HTMLInputElement>(null);
+    const sessionRef = useRef<any>(null);
 
     useEffect(() => {
         async function init() {
@@ -16,6 +18,7 @@ export default function Chat() {
 
             if (available !== "no") {
                 setStatus("Ready");
+                sessionRef.current = await window.ai.languageModel.create();
             }
         }
         init();
@@ -24,8 +27,7 @@ export default function Chat() {
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e?.preventDefault();
         console.log(inputRef.current?.value);
-        const session = await window.ai.languageModel.create();
-        const result = await session.prompt(inputRef.current?.value);
+        const result = await sessionRef.current.prompt(inputRef.current?.value);
         setAnswer(result);
     }
 
@@ -54,7 +56,9 @@ export default function Chat() {
                     </button>
                 </div>
             </form>
-            <div>{answer}</div>
+            <div className="prose">
+                <ReactMarkdown>{answer || ""}</ReactMarkdown>
+            </div>
         </div>
     );
 }
