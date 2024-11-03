@@ -1,7 +1,9 @@
+import Chat from "./chat";
+
 export default function Page() {
     return (
         <>
-            <h1>Beep</h1>
+            <Chat></Chat>
         </>
     );
 }

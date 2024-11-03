@@ -33,7 +33,7 @@ export default function RootLayout({
                         Chrome Chatbot
                     </h1>
                 </div>
-                <div className="bg-stone-300 container mx-auto flex-1">
+                <div className="bg-stone-300 container mx-auto flex-1 p-4">
                     {children}
                 </div>
             </body>
