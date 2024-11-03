@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 export default function Chat() {
-    const [status, setStatus] = useState<string | undefined>();
+    const [status, setStatus] = useState(false);
     const [answer, setAnswer] = useState<string | undefined>();
     const inputRef = useRef<HTMLInputElement>(null);
     const sessionRef = useRef<any>(null);
@@ -17,7 +17,7 @@ export default function Chat() {
             setStatus(available);
 
             if (available !== "no") {
-                setStatus("Ready");
+                setStatus(true);
                 sessionRef.current = await window.ai.languageModel.create();
             }
         }
@@ -26,9 +26,13 @@ export default function Chat() {
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e?.preventDefault();
-        console.log(inputRef.current?.value);
+        setStatus(false);
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
         const result = await sessionRef.current.prompt(inputRef.current?.value);
         setAnswer(result);
+        setStatus(true);
     }
 
     return (
@@ -49,8 +53,9 @@ export default function Chat() {
                         ref={inputRef}
                     />
                     <button
-                        className="rounded-lg bg-black text-white w-32 px-2 py-1 font-semibold self-center mt-2"
+                        className="rounded-lg bg-black text-white w-32 px-2 py-1 font-semibold self-center mt-2 disabled:bg-gray-500 disabled:cursor-progress"
                         type="submit"
+                        disabled={!status}
                     >
                         Submit
                     </button>
