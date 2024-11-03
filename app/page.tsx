@@ -1,3 +1,7 @@
 export default function Page() {
-    return "Hello";
+    return (
+        <>
+            <h1>Beep</h1>
+        </>
+    );
 }

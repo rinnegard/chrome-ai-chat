@@ -26,9 +26,16 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
             >
-                {children}
+                <div className="bg-stone-400 py-8">
+                    <h1 className="text-center font-semibold text-4xl">
+                        Chrome Chatbot
+                    </h1>
+                </div>
+                <div className="bg-stone-300 container mx-auto flex-1">
+                    {children}
+                </div>
             </body>
         </html>
     );
