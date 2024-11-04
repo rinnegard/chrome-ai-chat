@@ -12,6 +12,7 @@ export type Message = {
 export default function Chat() {
     const [status, setStatus] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string>();
     const [messages, setMessages] = useState<Message[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
     const sessionRef = useRef<any>(null);
@@ -41,6 +42,7 @@ export default function Chat() {
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e?.preventDefault();
         setLoading(true);
+        setError(undefined);
         if (!inputRef.current) {
             return;
         }
@@ -56,21 +58,26 @@ export default function Chat() {
             ];
         });
 
-        const result = await sessionRef.current.prompt(inputValue);
-
-        setMessages((prev) => {
-            return [
-                ...prev,
-                { id: crypto.randomUUID(), self: false, text: result },
-            ];
-        });
+        try {
+            const result = await sessionRef.current.prompt(inputValue);
+            setMessages((prev) => {
+                return [
+                    ...prev,
+                    { id: crypto.randomUUID(), self: false, text: result },
+                ];
+            });
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            }
+        }
 
         setLoading(false);
     }
 
     return (
         <div className="flex flex-col justify-between h-full p-4 border border-gray-300 rounded-lg shadow-lg bg-white">
-            <div className="flex items-center">
+            <div className="flex items-center w-full gap-6">
                 <div
                     className={`w-4 h-4 rounded-full ${
                         status ? "bg-green-600" : "bg-red-600"
@@ -110,6 +117,11 @@ export default function Chat() {
                     ref={inputRef}
                     placeholder="Type your question..."
                 />
+                {error && (
+                    <div className="bg-red-500 px-2 rounded-md mt-2">
+                        {error}
+                    </div>
+                )}
                 <button
                     className="rounded-lg bg-blue-600 text-white w-full py-2 font-semibold mt-2 hover:bg-blue-500 transition duration-200 ease-in-out disabled:bg-gray-300 disabled:cursor-not-allowed"
                     type="submit"

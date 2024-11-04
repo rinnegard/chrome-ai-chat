@@ -4,8 +4,10 @@ import { Message } from "./chat";
 export default function ChatMessage({ message }: { message: Message }) {
     return (
         <span
-            className={`border border-solid border-blue-200 rounded-lg p-4 bg-blue-100 ${
-                message.self ? "self-end" : "self-start"
+            className={` rounded-lg p-4  ${
+                message.self
+                    ? "self-end bg-green-100"
+                    : "self-start bg-blue-100"
             }`}
         >
             <ReactMarkdown>{message.text}</ReactMarkdown>
