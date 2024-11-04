@@ -77,7 +77,7 @@ export default function Chat() {
 
     return (
         <div className="flex flex-col justify-between h-full p-4 border border-gray-300 rounded-lg shadow-lg bg-white">
-            <div className="flex items-center w-full gap-6">
+            <div className="flex items-center w-full">
                 <div
                     className={`w-4 h-4 rounded-full ${
                         status ? "bg-green-600" : "bg-red-600"
@@ -103,12 +103,6 @@ export default function Chat() {
             </div>
 
             <form className="flex flex-col mt-auto" onSubmit={handleSubmit}>
-                <label
-                    htmlFor="prompt"
-                    className="text-sm font-medium text-gray-700"
-                >
-                    Question:
-                </label>
                 <input
                     className="rounded-lg h-10 p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     type="text"
