@@ -15,6 +15,7 @@ export default function Chat() {
     const [messages, setMessages] = useState<Message[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
     const sessionRef = useRef<any>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function init() {
@@ -28,6 +29,14 @@ export default function Chat() {
         }
         init();
     }, []);
+
+    useEffect(() => {
+        const element = containerRef.current;
+
+        if (element) {
+            element.scrollTop = element.scrollHeight;
+        }
+    }, [messages]);
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e?.preventDefault();
@@ -72,7 +81,10 @@ export default function Chat() {
                 </span>
             </div>
 
-            <div className="overflow-y-scroll h-[40rem] my-4 p-2 border border-gray-200 rounded-lg bg-gray-50 flex flex-col gap-2">
+            <div
+                ref={containerRef}
+                className="overflow-y-scroll min-h-64 max-h-96 my-4 p-2 border border-gray-200 rounded-lg bg-gray-50 flex flex-col gap-2"
+            >
                 {messages.map((message) => {
                     return (
                         <ChatMessage
